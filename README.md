@@ -4,4 +4,4 @@ Evaluate any RAG pipeline on faithfulness, answer relevance, and context precisi
 and compare chunking and retrieval settings in a dashboard.
 
 ## Status
-Work in progress, 30-day build.
+Work in progress.
