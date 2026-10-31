@@ -1,0 +1,2 @@
+RAG stands for Retrieval Augmented Generation. It combines a retriever with a language model. 
+Chunking splits documents into smaller pieces before embedding. 
