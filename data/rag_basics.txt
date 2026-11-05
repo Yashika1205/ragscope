@@ -1,0 +1,13 @@
+Retrieval Augmented Generation, or RAG, combines a retriever with a language model. Instead of relying only on what the model memorised during training, a RAG system first fetches relevant passages from an external knowledge base and then asks the model to answer using those passages. This reduces hallucinations and lets the system use private or recent data without retraining. 
+ 
+Documents are split into chunks before they are embedded. Fixed-size chunking cuts text every N characters, usually with an overlap so that sentences at the boundary are not lost. Sentence-based chunking keeps whole sentences together. Chunks that are too small lose context, while chunks that are too large dilute the embedding and waste the context window. 
+ 
+An embedding model turns text into a vector of numbers. Texts with similar meaning end up close together in vector space. The all-MiniLM-L6-v2 model produces 384 dimensional vectors and runs quickly on a CPU. Closeness is usually measured with cosine similarity. 
+ 
+A vector database such as ChromaDB, FAISS or Pinecone stores the embeddings and finds the nearest neighbours of a query vector. ChromaDB can persist its data to disk and stores metadata such as the source file and chunk id next to every vector. 
+ 
+At question time the query is embedded and the top-k most similar chunks are returned. A small k may miss the answer, while a large k adds noise. Many systems tune k between three and ten. 
+ 
+A RAG system should be evaluated, not just demoed. Retrieval is measured with hit rate, mean reciprocal rank and context precision. Generation is measured with faithfulness, which checks that the answer is supported by the retrieved context, and answer relevance, which checks that the answer addresses the question. Frameworks such as RAGAS automate these metrics with an LLM judge. 
+ 
+A hallucination is a confident answer that is not supported by the sources. Grounding the prompt in retrieved context, asking the model to say it does not know, and citing sources all reduce it. 

@@ -1,0 +1,10 @@
+[ 
+  {"question": "What does RAG combine?", "keywords": ["retriever"]}, 
+  {"question": "Why use overlap in fixed-size chunking?", "keywords": ["overlap", "boundary"]}, 
+  {"question": "How many dimensions does all-MiniLM-L6-v2 produce?", "keywords": ["384"]}, 
+  {"question": "Which vector databases store embeddings?", "keywords": ["ChromaDB", "FAISS"]}, 
+  {"question": "What happens if k is too large?", "keywords": ["adds noise"]}, 
+  {"question": "What does faithfulness measure?", "keywords": ["supported by the retrieved context"]}, 
+  {"question": "How is retrieval measured?", "keywords": ["hit rate", "reciprocal rank"]}, 
+  {"question": "How can hallucination be reduced?", "keywords": ["Grounding"]} 
+] 
