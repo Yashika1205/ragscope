@@ -1,3 +1,7 @@
+import numpy as np 
+from src.chunker import split_sentences 
+from src.embedder import embed_texts 
+ 
 import json 
  
 from src.config import DATA_DIR 
@@ -33,3 +37,19 @@ def evaluate_retrieval(pipeline, questions=None):
         contexts = retrieve(q["question"], pipeline.top_k, pipeline.collection) 
         rows.append(retrieval_metrics(contexts, q["keywords"])) 
     return {key: round(sum(r[key] for r in rows) / len(rows), 4) for key in ("hit_rate", "mrr", "context_precision")} 
+ 
+ 
+def _cos(a, b): 
+    a, b = np.array(a), np.array(b) 
+    return float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-9)) 
+ 
+ 
+def faithfulness_proxy(answer, contexts): 
+    sentences = split_sentences(answer) 
+    if not sentences or not contexts: 
+        return 0.0 
+    vecs = embed_texts(sentences + [c["text"] for c in contexts]) 
+    s_vecs = vecs[:len(sentences)] 
+    c_vecs = vecs[len(sentences):] 
+    scores = [max(_cos(s, c) for c in c_vecs) for s in s_vecs] 
+    return round(float(np.mean(scores)), 4) 
