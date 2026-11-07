@@ -58,3 +58,16 @@ def faithfulness_proxy(answer, contexts):
 def answer_relevance(question, answer): 
     q_vec, a_vec = embed_texts([question, answer]) 
     return round(max(0.0, _cos(q_vec, a_vec)), 4) 
+ 
+ 
+def evaluate_pipeline(pipeline, questions=None): 
+    questions = questions or load_questions() 
+    rows = [] 
+    for q in questions: 
+        result = pipeline.ask(q["question"]) 
+        row = retrieval_metrics(result["contexts"], q["keywords"]) 
+        row["answer_relevance"] = answer_relevance(q["question"], result["answer"]) 
+        row["faithfulness"] = faithfulness_proxy(result["answer"], result["contexts"]) 
+        rows.append(row) 
+    keys = list(rows[0].keys()) 
+    return {k: round(sum(r[k] for r in rows) / len(rows), 4) for k in keys} 
