@@ -53,3 +53,8 @@ def faithfulness_proxy(answer, contexts):
     c_vecs = vecs[len(sentences):] 
     scores = [max(_cos(s, c) for c in c_vecs) for s in s_vecs] 
     return round(float(np.mean(scores)), 4) 
+ 
+ 
+def answer_relevance(question, answer): 
+    q_vec, a_vec = embed_texts([question, answer]) 
+    return round(max(0.0, _cos(q_vec, a_vec)), 4) 
