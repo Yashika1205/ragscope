@@ -21,3 +21,16 @@ def run_experiments(grid=GRID, docs=None, questions=None):
         metrics = evaluate_pipeline(pipe, questions) 
         rows.append({"strategy": strategy, "chunk_size": size, "top_k": k, "num_chunks": n_chunks, **metrics}) 
     return pd.DataFrame(rows) 
+ 
+ 
+def save_results(df, path=RESULTS_FILE): 
+    path.parent.mkdir(parents=True, exist_ok=True) 
+    df.to_csv(path, index=False) 
+    return path 
+ 
+ 
+if __name__ == "__main__": 
+    df = run_experiments() 
+    path = save_results(df) 
+    print(df.sort_values(["hit_rate", "mrr"], ascending=False).to_string(index=False)) 
+    print(f"Saved {len(df)} rows to {path}") 
